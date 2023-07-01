@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 """
 Author: Seven <lj7seven@foxmail.com>
 Purpose: Say hello
