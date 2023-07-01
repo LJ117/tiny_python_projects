@@ -8,4 +8,4 @@ parser.add_argument(
     "-n", "--name", metavar="name", default="World", help="Name to greet"
 )
 args = parser.parse_args()
-print(f"Hello {args.name}!")
+print(f"Hello, {args.name}!")
