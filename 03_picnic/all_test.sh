@@ -4,7 +4,7 @@ set -eu -o pipefail
 
 PRG="picnic.py"
 for FILE in solution*.py; do
-    echo "==> ${FILE} <==" 
+    echo "==> ${FILE} <=="
     cp "$FILE" "$PRG"
     make test
 done
