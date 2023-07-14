@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Lookup tables"""
+"""
+Author : seven <seven@localhost>
+Date   : 2023-07-14
+Purpose: Gashlycrumb
+"""
 
 import argparse
 
 
 # --------------------------------------------------
 def get_args():
-    """get command-line arguments"""
+    """Get command-line arguments"""
 
     parser = argparse.ArgumentParser(
         description="Gashlycrumb",
@@ -14,7 +18,7 @@ def get_args():
     )
 
     parser.add_argument(
-        "letter", help="Letter(s)", metavar="letter", nargs="+", type=str
+        "letter", metavar="letter", nargs="+", type=str, help="Letter(s)"
     )
 
     parser.add_argument(
@@ -22,7 +26,7 @@ def get_args():
         "--file",
         help="Input file",
         metavar="FILE",
-        type=argparse.FileType("r"),
+        type=argparse.FileType("rt"),
         default="gashlycrumb.txt",
     )
 
@@ -34,10 +38,22 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    lookup = {line[0].upper(): line.rstrip() for line in args.file}
 
-    for letter in args.letter:
-        print(lookup.get(letter.upper(), f'I do not know "{letter}".'))
+    letterDict = dict()
+    file = args.file
+    for line in file:
+        # print(line, end="")
+        l_list = line.split()
+        letterDict[str(l_list[0]).upper()] = str(line).rstrip()
+    file.close()
+
+    letters = args.letter
+    for letter in letters:
+        letter_key = str(letter).upper()
+        if letter_key in letterDict:
+            print(letterDict[letter_key])
+        else:
+            print(f'I do not know "{letter}".')
 
 
 # --------------------------------------------------

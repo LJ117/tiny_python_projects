@@ -9,21 +9,22 @@ def get_args():
     """get command-line arguments"""
 
     parser = argparse.ArgumentParser(
-        description='Gashlycrumb',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        description="Gashlycrumb",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
-    parser.add_argument('letter',
-                        help='Letter(s)',
-                        metavar='letter',
-                        nargs='+',
-                        type=str)
+    parser.add_argument(
+        "letter", help="Letter(s)", metavar="letter", nargs="+", type=str
+    )
 
-    parser.add_argument('-f',
-                        '--file',
-                        help='Input file',
-                        metavar='FILE',
-                        type=argparse.FileType('r'),
-                        default='gashlycrumb.txt')
+    parser.add_argument(
+        "-f",
+        "--file",
+        help="Input file",
+        metavar="FILE",
+        type=argparse.FileType("r"),
+        default="gashlycrumb.txt",
+    )
 
     return parser.parse_args()
 
@@ -43,5 +44,5 @@ def main():
 
 
 # --------------------------------------------------
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
