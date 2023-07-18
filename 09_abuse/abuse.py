@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Heap abuse"""
+"""
+Author : seven <seven@localhost>
+Date   : 2023-07-18
+Purpose: Heap abuse
+"""
 
 import argparse
-import random
 
 
 # --------------------------------------------------
@@ -10,7 +13,8 @@ def get_args():
     """Get command-line arguments"""
 
     parser = argparse.ArgumentParser(
-        description="Heap abuse", formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        description="Heap abuse",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     parser.add_argument(
@@ -32,18 +36,13 @@ def get_args():
     )
 
     parser.add_argument(
-        "-s", "--seed", help="Random seed", metavar="seed", type=int, default=None
+        "-s",
+        "--seed",
+        help="Random seed",
+        metavar="seed",
+        type=str,
     )
-
-    args = parser.parse_args()
-
-    if args.adjectives < 1:
-        parser.error(f'--adjectives "{args.adjectives}" must be > 0')
-
-    if args.number < 1:
-        parser.error(f'--number "{args.number}" must be > 0')
-
-    return args
+    return parser.parse_args()
 
 
 # --------------------------------------------------
@@ -51,7 +50,12 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    random.seed(args.seed)
+
+    adjectives = args.adjectives
+
+    insults = args.insults
+
+    seed = args.seed
 
     adjectives = """
     bankrupt base caterwauling corrupt cullionly detestable dishonest false
@@ -67,10 +71,7 @@ def main():
     gull harpy jack jolthead knave liar lunatic maw milksop minion
     ratcatcher recreant rogue scold slave swine traitor varlet villain worm
     """.strip().split()
-
-    for _ in range(args.number):
-        adjs = ", ".join(random.sample(adjectives, k=args.adjectives))
-        print(f"You {adjs} {random.choice(nouns)}!")
+    print(f"You {adjectives[0]}, {adjectives[1]} {nouns[3]}")
 
 
 # --------------------------------------------------
