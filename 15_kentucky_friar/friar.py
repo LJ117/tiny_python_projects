@@ -25,7 +25,7 @@ def get_args():
 
     if os.path.isfile(args.text):
         with open(args.text, encoding="utf-8") as text_file:
-            args.text = text_file.read()
+            args.text = text_file.read().rstrip()
 
     return args
 
@@ -48,10 +48,8 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-
-    pos_arg = args.text
-
-    print(stemmer(pos_arg))
+    for line in str(args.text).splitlines():
+        print(line.split())
 
 
 # --------------------------------------------------
