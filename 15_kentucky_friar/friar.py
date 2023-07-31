@@ -25,22 +25,37 @@ def get_args():
 
     if os.path.isfile(args.text):
         with open(args.text, encoding="utf-8") as text_file:
-            args.text = text_file.read().rstrip()
+            args.text = text_file.read()
 
     return args
 
 
 # --------------------------------------------------
-def stemmer(word):
-    """split words"""
-    pattern = "([aeiou]*)?(ing)(.*)"
-    match = re.match(pattern, word)
-    if match:
-        res1 = match.group(1) or ""
-        res2 = match.group(2) or ""
-        return (res1, res2)
-    else:
-        return (word, "")
+def test_fry():
+    """Test the func fry()"""
+    assert fry("you") == "y'all"
+    assert fry("You") == "Y'all"
+    assert fry("fishing") == "fishin'"
+    assert fry("Aching") == "Achin'"
+    assert fry("swing") == "swing"
+
+
+# --------------------------------------------------
+def fry(word):
+    """
+    Drop the `g` fron `-ing` words, change `you` to `y'all`
+    """
+    match_you = re.match("([Yy])ou$", word)
+    match_ing = re.search("(.+)ing$", word)
+
+    if match_you:
+        return match_you.group(1) + "'all"
+    elif match_ing:
+        prefix = match_ing.group(1)
+        if re.search("[aeiouy]", prefix, re.IGNORECASE):
+            return prefix + "in'"
+
+    return word
 
 
 # --------------------------------------------------
@@ -48,8 +63,12 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
+
+    splitter = re.compile(r"(\W+)")
+
     for line in str(args.text).splitlines():
-        print(line.split())
+        words = [fry(word) for word in splitter.split(line.rstrip())]
+        print("".join(words))
 
 
 # --------------------------------------------------
