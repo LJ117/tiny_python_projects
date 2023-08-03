@@ -97,8 +97,11 @@ def main():
     #     ret.append("".join(ret_line))
     # print("\n".join(ret))
 
+    # for line in str(args.text).splitlines():
+    #     print("".join([scramble(word) for word in splitter.split(line)]))
+
     for line in str(args.text).splitlines():
-        print("".join([scramble(word) for word in splitter.split(line)]))
+        print("".join(map(scramble, splitter.split(line))))
 
 
 # --------------------------------------------------
