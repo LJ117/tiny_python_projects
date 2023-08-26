@@ -7,6 +7,11 @@ Purpose: Create Workout of (the) Day (WOD)
 
 import argparse
 import random
+import io
+import csv
+import re
+from pprint import pprint
+from tabulate import tabulate
 
 
 # --------------------------------------------------
@@ -45,27 +50,62 @@ def get_args():
         default=4,
     )
 
-    parser.add_argument("-e", "--easy", help="Halve the reps", default=False)
+    parser.add_argument("-e", "--easy", help="Halve the reps", action="store_true")
+    args = parser.parse_args()
 
-    return parser.parse_args()
+    if args.num < 1:
+        parser.error(f'--num "{args.num}" must be greater than 0')
+
+    return args
+
+
+# --------------------------------------------------
+def test_read_csv():
+    """
+    Test the function read_csv()
+    """
+    text = io.StringIO("exercise,reps\nBurpees,20-50\nSitups,40-100\n")
+    assert read_csv(text) == [("Burpees", 20, 50), ("Situps", 40, 100)]
+
+
+# --------------------------------------------------
+def read_digits(text):
+    pattern = r"(\d+)-(\d+)"
+    match = re.match(pattern, text)
+    if match:
+        low, hight = match.groups()
+        return int(low), int(hight)
+    return (0, 0)
+
+
+# --------------------------------------------------
+def read_csv(fh):
+    """
+    Read the CSV input
+    """
+    reader = csv.DictReader(fh, delimiter=",")
+    exercise = list()
+    for row in reader:
+        name, reps = row["exercise"], row["reps"]
+        low, high = read_digits(reps)
+        exercise.append((name, low, high))
+    return exercise
 
 
 # --------------------------------------------------
 def main():
-    """Make a jazz noise here"""
-
     args = get_args()
-    str_arg = args.arg
-    int_arg = args.int
-    file_arg = args.file
-    flag_arg = args.on
-    pos_arg = args.positional
+    random.seed(args.seed)
+    wod = []
+    exercises = read_csv(args.file)
 
-    print(f'str_arg = "{str_arg}"')
-    print(f'int_arg = "{int_arg}"')
-    print('file_arg = "{}"'.format(file_arg.name if file_arg else ""))
-    print(f'flag_arg = "{flag_arg}"')
-    print(f'positional = "{pos_arg}"')
+    for name, low, high in random.sample(exercises, k=args.num):
+        reps = random.randint(low, high)
+        if args.easy:
+            reps = int(reps / 2)
+        wod.append((name, reps))
+
+    print(tabulate(wod, headers=["Exercise", "Reps"]))
 
 
 # --------------------------------------------------
